@@ -1,0 +1,10 @@
+{
+  "name": "testeurs-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Horde de testeurs (gremlins.js + Playwright) du skill testeurs (Claude Code)",
+  "dependencies": {
+    "gremlins.js": "^2.2.0",
+    "playwright": "^1.49.0"
+  }
+}
