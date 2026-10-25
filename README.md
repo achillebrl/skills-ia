@@ -11,6 +11,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 | [aveugle](aveugle/) | Ton site face à un aveugle : axe-core, puis la page parcourue au clavier seulement (Tab, Maj+Tab, Entrée, Espace) ; ordre de focus, pièges, focus invisible, images sans alternative, boutons sans nom, champs sans étiquette, formulaires impossibles à finir ; corrections classées de la plus bloquante à la plus simple | `/aveugle https://ton-site.fr` |
 | [match](match/) | Ton site face à ton concurrent, en 5 rounds (promesse, preuve, prix, vitesse mesurée avec Lighthouse, bouton pour agir) : un gagnant par round, la phrase exacte qui rattrape là où tu perds, un score sur 5 et tes 3 coups à jouer ce soir | `/match https://ton-site.fr https://concurrent.fr` |
 | [clients](clients/) | Ton idée face à 10 clients simulés, avec The Mom Test : tu poses tes questions, ils répondent comme de vrais gens (compliments creux compris) ; chaque piège signalé avec la bonne version, puis qui a vraiment le problème, ce qu'il paie déjà et 5 questions pour de vrais clients | `/clients "ton idée en une phrase"` |
+| [tarif](tarif/) | Ton prix face à 100 acheteurs simulés (étudiant, freelance, PME, cadre…), avec les 4 questions de van Westendorp : fourchette de prix acceptable, prix optimal et prix qui fait fuir calculés par un script, tes deux prix comparés par profil, et le profil prêt à payer plus pour une offre premium | `/tarif "ton produit en une phrase" 9 19` |
 | [seniors](seniors/) | 7 relecteurs seniors (sécurité, perf, lisibilité, tests, mobile, accessibilité, SEO) relisent ton code avant le push et rendent une seule liste : 3 corrections avant de pusher, 2 idées pour plus tard | `/seniors` |
 
 ## Installer un skill
@@ -19,7 +20,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 2. Copie-le dans `~/.claude/skills/` (Mac / Linux) ou `%USERPROFILE%\.claude\skills\` (Windows).
 3. Relance Claude Code et tape la commande.
 
-`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse.
+`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` a besoin de Node.js pour son calcul, sans rien installer.
 
 Ou en une ligne (Mac / Linux), par exemple pour `visiteurs` :
 
@@ -27,7 +28,7 @@ Ou en une ligne (Mac / Linux), par exemple pour `visiteurs` :
 git clone --depth 1 https://github.com/achillebrl/skills-ia /tmp/skills-ia && cp -R /tmp/skills-ia/visiteurs ~/.claude/skills/
 ```
 
-Les visiteurs, relecteurs, investisseurs, prospects et clients sont simulés par l'IA : c'est un premier filtre pour repérer les problèmes évidents, pas un remplacement de vrais tests utilisateurs, de vrais entretiens ni d'une vraie revue de code. `aveugle` ne remplace pas un audit RGAA.
+Les visiteurs, relecteurs, investisseurs, prospects, clients et acheteurs sont simulés par l'IA : c'est un premier filtre pour repérer les problèmes évidents, pas un remplacement de vrais tests utilisateurs, de vrais entretiens ni d'une vraie revue de code. `aveugle` ne remplace pas un audit RGAA.
 
 ## Workflows n8n
 
