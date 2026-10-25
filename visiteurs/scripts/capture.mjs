@@ -21,7 +21,7 @@ if (!url || !out || url.startsWith("--")) {
 }
 const NAME = opt("name") ?? "page";
 const VARIANT = { h1: opt("h1"), sub: opt("sub") };
-const MAX_SCREENS = 10;
+const MAX_SCREENS = 15;
 const MAX_ELEMENTS = 60;
 const MAX_LINKS = 15;
 
@@ -34,7 +34,18 @@ const PROFILES = {
 function extract({ prefix, maxElements }) {
   const vh = window.innerHeight;
   const vw = window.innerWidth;
-  const parse = (c) => (c.match(/[\d.]+/g) || []).map(Number);
+  // Toute couleur CSS (rgb, oklab, oklch de Tailwind v4, color-mix…) ramenée en sRGB par un canvas : [r, g, b, alpha].
+  const cx = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+  const parse = (c) => {
+    cx.clearRect(0, 0, 1, 1);
+    cx.fillStyle = "#000";
+    cx.fillStyle = c;
+    cx.fillRect(0, 0, 1, 1);
+    const [r, g, b, a] = cx.getImageData(0, 0, 1, 1).data;
+    return [r, g, b, a / 255];
+  };
+  // Texte semi-transparent : sa couleur réelle est un mélange avec le fond.
+  const blend = (fg, bg) => fg.slice(0, 3).map((v, i) => Math.round(v * fg[3] + bg[i] * (1 - fg[3])));
   const lum = ([r, g, b]) => {
     const f = (v) => {
       const s = v / 255;
@@ -45,7 +56,7 @@ function extract({ prefix, maxElements }) {
   const bgOf = (el) => {
     for (let n = el; n; n = n.parentElement) {
       const c = parse(getComputedStyle(n).backgroundColor);
-      if (c.length >= 3 && (c.length < 4 || c[3] > 0.5)) return c.slice(0, 3);
+      if (c[3] > 0.5) return c.slice(0, 3);
     }
     return [255, 255, 255];
   };
@@ -67,8 +78,9 @@ function extract({ prefix, maxElements }) {
     const text = label(el);
     if (!text) continue;
     const r = el.getBoundingClientRect();
+    if (r.right <= 0 || r.left >= vw) continue; // hors écran horizontal (carrousel) : n'apparaît dans aucune capture
     const s = getComputedStyle(el);
-    const fg = parse(s.color).slice(0, 3);
+    const bg = bgOf(el);
     elements.push({
       id: `${prefix}${elements.length + 1}`,
       tag: el.tagName.toLowerCase(),
@@ -77,7 +89,7 @@ function extract({ prefix, maxElements }) {
       x: Math.round(r.left + scrollX), y: Math.round(r.top + scrollY), w: Math.round(r.width), h: Math.round(r.height),
       inFold: r.top < vh && r.bottom > 0,
       fontSize: parseFloat(s.fontSize),
-      contrast: ratio(fg, bgOf(el)),
+      contrast: ratio(blend(parse(s.color), bg), bg),
     });
     el.setAttribute("data-visiteurs-id", elements[elements.length - 1].id);
   }
@@ -130,7 +142,8 @@ function annotate(on) {
   if (!on) return;
   const layer = document.createElement("div");
   layer.id = "__visiteurs";
-  layer.style.cssText = "position:absolute;left:0;top:0;width:100%;height:0;z-index:2147483647;pointer-events:none";
+  // Couche bornée à la page : une case qui déborde élargirait le document et fausserait le viewport mobile.
+  layer.style.cssText = `position:absolute;left:0;top:0;width:100%;height:${document.documentElement.scrollHeight}px;overflow:hidden;z-index:2147483647;pointer-events:none`;
   for (const el of document.querySelectorAll("[data-visiteurs-id]")) {
     const r = el.getBoundingClientRect();
     const box = document.createElement("div");
@@ -209,6 +222,10 @@ async function captureProfile(browser, key, { prefix, context }) {
   await page.evaluate(annotate, true);
   const vh = data.viewport.height;
   const screens = Math.min(MAX_SCREENS, Math.ceil(data.pageHeight / vh));
+  // Un élément au-delà du dernier écran capturé serait cité aux visiteurs sans qu'ils puissent le voir.
+  const cut = data.elements.filter((e) => e.ecran > screens);
+  if (cut.length) console.log(`ATTENTION ${key} : page de plus de ${MAX_SCREENS} écrans, ${cut.length} éléments du bas écartés (${cut.map((e) => e.id).join(", ")})`);
+  data.elements = data.elements.filter((e) => e.ecran <= screens);
   const files = [];
   for (let i = 0; i < screens; i += 1) {
     const file = `${base}-ecran-${i + 1}.png`;
