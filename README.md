@@ -24,6 +24,10 @@ git clone --depth 1 https://github.com/achillebrl/skills-ia /tmp/skills-ia && cp
 
 Les visiteurs et relecteurs sont simulés par l'IA : c'est un premier filtre pour repérer les problèmes évidents, pas un remplacement de vrais tests utilisateurs ni d'une vraie revue de code.
 
+## Workflows n8n
+
+- [Inbox : un agent trie ta boîte mail la nuit](inbox/) : tri à 6 h (urgent, client, facture, newsletter, poubelle), brouillons de réponse jamais envoyés sans toi, factures avec le montant, résumé à 8 h. Import : `inbox/inbox.json`.
+
 ## Fiches
 
 - [Claude Code devient con au bout d'une heure ?](fiches/contexte.md) : 4 réflexes pour sa mémoire de travail, et un modèle de CLAUDE.md.

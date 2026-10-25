@@ -1,0 +1,544 @@
+{
+  "name": "Inbox : un agent trie tes mails la nuit",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "27d95a63-cb3a-5d52-b233-c745abfe63a3",
+      "name": "Chaque jour à 6 h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "monNom",
+              "value": "Prénom Nom",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "monEmail",
+              "value": "toi@exemple.com",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "monStyle",
+              "value": "vouvoiement, phrases courtes et chaleureuses, signature : Prénom",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cf3e727e-cdc7-5c1f-916a-e18ad28cc80c",
+      "name": "Réglages",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "label",
+        "returnAll": true
+      },
+      "id": "46451b24-3acf-5dcb-9e21-2116f6b9c479",
+      "name": "Libellés Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Retrouve l'identifiant Gmail de chaque libellé IA-… (à créer une fois dans Gmail).\nconst NOMS = {\"urgent\": \"IA-Urgent\", \"client\": \"IA-Client\", \"facture\": \"IA-Facture\", \"newsletter\": \"IA-Newsletter\", \"poubelle\": \"IA-Poubelle\"};\nconst parNom = Object.fromEntries($input.all().map((l) => [l.json.name, l.json.id]));\nconst manquants = Object.values(NOMS).filter((n) => !parNom[n]);\nif (manquants.length) throw new Error(`Crée d'abord ces libellés dans Gmail : ${manquants.join(', ')}`);\nconst ids = Object.fromEntries(Object.entries(NOMS).map(([cat, nom]) => [cat, parNom[nom]]));\nreturn [{ json: { ids } }];"
+      },
+      "id": "287ce18b-11cc-5a56-8e13-d8d09398793c",
+      "name": "Trouver les libellés IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 50,
+        "simple": false,
+        "filters": {
+          "q": "in:inbox is:unread newer_than:1d -label:ia-urgent -label:ia-client -label:ia-facture -label:ia-newsletter -label:ia-poubelle"
+        },
+        "options": {}
+      },
+      "id": "c4b2fb88-a4d2-5c89-a18b-90da36b3d27d",
+      "name": "Mails non lus des dernières 24 h",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tu tries les mails de {{ $('Réglages').first().json.monNom }}. Classe ce mail dans UNE catégorie :\n- urgent : demande une action rapide (problème, échéance proche, personne qui attend une réponse aujourd'hui)\n- client : un client ou un prospect qui écrit (question, devis, commande, suivi)\n- facture : une facture, un reçu ou une demande de paiement\n- newsletter : lettre d'information, promotion, notification automatique\n- poubelle : publicité non sollicitée, spam, rien d'utile\n\nRends aussi :\n- resume : une phrase de 15 mots au plus, en français\n- montant et fournisseur : seulement pour une facture (montant avec la devise, ex. « 49,90 € »), sinon null\n- brouillon : seulement pour un client, une réponse prête à relire, dans ce style : {{ $('Réglages').first().json.monStyle }}. Ne promets rien que le mail ne permet pas de savoir (prix, délai) : mets [à compléter] à la place. Sinon null.\n\nDe : {{ $json.from?.text ?? '' }}\nObjet : {{ $json.subject ?? '' }}\nTexte :\n{{ ($json.text ?? $json.snippet ?? '').slice(0, 4000) }}",
+        "hasOutputParser": true
+      },
+      "id": "de0a5822-018e-508c-a809-401ebd743385",
+      "name": "Classer avec Claude",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-haiku-5-5"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "6c53824e-ee02-5d0d-8ad9-8aabde87bd84",
+      "name": "Modèle Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        1060,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"categorie\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"urgent\",\n        \"client\",\n        \"facture\",\n        \"newsletter\",\n        \"poubelle\"\n      ]\n    },\n    \"resume\": {\n      \"type\": \"string\"\n    },\n    \"montant\": {\n      \"type\": [\n        \"string\",\n        \"null\"\n      ]\n    },\n    \"fournisseur\": {\n      \"type\": [\n        \"string\",\n        \"null\"\n      ]\n    },\n    \"brouillon\": {\n      \"type\": [\n        \"string\",\n        \"null\"\n      ]\n    }\n  },\n  \"required\": [\n    \"categorie\",\n    \"resume\",\n    \"montant\",\n    \"fournisseur\",\n    \"brouillon\"\n  ]\n}"
+      },
+      "id": "e6b2f033-1c4f-5cd5-8898-690e05367f90",
+      "name": "Format de la réponse",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1240,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Associe chaque mail à son classement (même ordre que la liste des mails).\nconst mails = $('Mails non lus des dernières 24 h').all();\nreturn $input.all().map((item, i) => {\n  const m = mails[i].json;\n  const c = item.json.output ?? {};\n  return { json: {\n    id: m.id,\n    threadId: m.threadId,\n    de: m.from?.value?.[0]?.address ?? '',\n    nom: m.from?.value?.[0]?.name ?? '',\n    sujet: m.subject ?? '(sans objet)',\n    categorie: ['urgent', 'client', 'facture', 'newsletter', 'poubelle'].includes(c.categorie) ? c.categorie : 'urgent',\n    resume: c.resume ?? '',\n    montant: c.montant ?? null,\n    fournisseur: c.fournisseur ?? null,\n    brouillon: c.brouillon ?? null,\n  } };\n});"
+      },
+      "id": "f41d40aa-e78e-52b1-85db-ae2e9d1caeea",
+      "name": "Mail + classement",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": "={{ [$('Trouver les libellés IA').first().json.ids[$json.categorie]] }}"
+      },
+      "id": "316d4750-009a-5319-95c4-a22d5c9ba340",
+      "name": "Ranger dans son libellé",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1560,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ ['newsletter', 'poubelle'].includes($json.categorie) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e8d84b3f-9bbc-5c62-9b66-e1fed0abb3ef",
+      "name": "Newsletter ou poubelle ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1560,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "id": "3aa135a1-1931-5b4e-ad89-a31806229b14",
+      "name": "Sortir de la boîte de réception",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1800,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.categorie === 'client' && !!$json.brouillon }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3d198a4d-d7c6-5756-b2c8-26804901629f",
+      "name": "Client ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1560,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: {{ $json.sujet }}",
+        "emailType": "text",
+        "message": "={{ $json.brouillon }}",
+        "options": {
+          "threadId": "={{ $json.threadId }}",
+          "sendTo": "={{ $json.de }}"
+        }
+      },
+      "id": "ab0e6b35-1703-57a8-bd78-9e8fdb34cff5",
+      "name": "Brouillon de réponse (jamais envoyé)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1800,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "mails",
+        "options": {}
+      },
+      "id": "678c5bf6-c7eb-5d2d-9f4d-de797a29c1bd",
+      "name": "Tout regrouper",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Écrit le résumé de 8 h : ce qu'il reste à traiter, les factures avec leur montant, ce qui a été rangé.\nconst mails = $input.first().json.mails ?? [];\nconst par = (c) => mails.filter((m) => m.categorie === c);\nconst esc = (s) => String(s ?? '').replace(/[&<>\"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[ch]));\nconst aTraiter = [...par('urgent'), ...par('client')];\nconst ligne = (m) => `<li><b>${esc(m.nom || m.de)}</b> : ${esc(m.sujet)}<br><small>${esc(m.resume)}${m.categorie === 'client' ? ' · <b>brouillon prêt</b>' : ''}</small></li>`;\nconst factures = par('facture');\nconst html = `<h2>📬 ${aTraiter.length} mail${aTraiter.length > 1 ? 's' : ''} à traiter ce matin</h2>\n<ul>${aTraiter.map(ligne).join('') || '<li>Rien d\\'urgent 🎉</li>'}</ul>\n<h3>🧾 Factures (${factures.length})</h3>\n<ul>${factures.map((m) => `<li>${esc(m.fournisseur || m.nom || m.de)} : <b>${esc(m.montant || 'montant à vérifier')}</b></li>`).join('') || '<li>Aucune</li>'}</ul>\n<p>Rangé : ${par('newsletter').length} newsletter(s) et ${par('poubelle').length} mail(s) inutile(s), sortis de ta boîte de réception (rien n'est supprimé).</p>\n<p><small>Les brouillons sont dans Gmail : rien n'est envoyé sans toi.</small></p>`;\nreturn [{ json: { sujet: `${aTraiter.length} mail${aTraiter.length > 1 ? 's' : ''} à traiter, le reste est rangé`, html } }];"
+      },
+      "id": "3c29f69d-6031-5e4a-a176-b3d6b0ec9c27",
+      "name": "Écrire le résumé",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{ $now.set({ hour: 8, minute: 0, second: 0, millisecond: 0 }).toISO() }}"
+      },
+      "id": "154493fb-20f5-54be-a688-7b324f54d96b",
+      "name": "Attendre 8 h",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        600
+      ],
+      "webhookId": "5e6025da-197e-5617-9e2f-406311d88506"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "sendTo": "={{ $('Réglages').first().json.monEmail }}",
+        "subject": "={{ $json.sujet }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "9bb818fe-28bd-5a28-8eb8-a24af9bec5f6",
+      "name": "Envoyer le résumé",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2220,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Inbox : un agent trie tes mails la nuit\n1. Crée 5 libellés dans Gmail : IA-Urgent, IA-Client, IA-Facture, IA-Newsletter, IA-Poubelle.\n2. Connecte ton compte Gmail sur chaque nœud Gmail, et ta clé Anthropic sur « Modèle Claude ».\n3. Remplis « Réglages » : ton nom, ton email (pour le résumé), ton style d'écriture.\n4. Active le workflow : tri à 6 h, résumé à 8 h. Rien n'est supprimé, aucun mail n'est envoyé à tes contacts.",
+        "height": 260,
+        "width": 520
+      },
+      "id": "d51e3633-1104-56b4-86d4-926ef5018c70",
+      "name": "Mode d'emploi",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -120
+      ]
+    }
+  ],
+  "connections": {
+    "Chaque jour à 6 h": {
+      "main": [
+        [
+          {
+            "node": "Réglages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Réglages": {
+      "main": [
+        [
+          {
+            "node": "Libellés Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Libellés Gmail": {
+      "main": [
+        [
+          {
+            "node": "Trouver les libellés IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trouver les libellés IA": {
+      "main": [
+        [
+          {
+            "node": "Mails non lus des dernières 24 h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mails non lus des dernières 24 h": {
+      "main": [
+        [
+          {
+            "node": "Classer avec Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classer avec Claude": {
+      "main": [
+        [
+          {
+            "node": "Mail + classement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail + classement": {
+      "main": [
+        [
+          {
+            "node": "Ranger dans son libellé",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Newsletter ou poubelle ?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Client ?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tout regrouper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Newsletter ou poubelle ?": {
+      "main": [
+        [
+          {
+            "node": "Sortir de la boîte de réception",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Client ?": {
+      "main": [
+        [
+          {
+            "node": "Brouillon de réponse (jamais envoyé)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Tout regrouper": {
+      "main": [
+        [
+          {
+            "node": "Écrire le résumé",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Écrire le résumé": {
+      "main": [
+        [
+          {
+            "node": "Attendre 8 h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attendre 8 h": {
+      "main": [
+        [
+          {
+            "node": "Envoyer le résumé",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modèle Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classer avec Claude",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format de la réponse": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Classer avec Claude",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Paris"
+  },
+  "pinData": {}
+}
