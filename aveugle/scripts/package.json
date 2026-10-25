@@ -1,0 +1,10 @@
+{
+  "name": "aveugle-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Audit axe-core + parcours au clavier (Playwright) du skill aveugle (Claude Code)",
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "playwright": "^1.49.0"
+  }
+}

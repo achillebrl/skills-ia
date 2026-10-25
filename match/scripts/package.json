@@ -1,0 +1,9 @@
+{
+  "name": "match-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Lecture des deux sites (Playwright) du skill match (Claude Code)",
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}
