@@ -8,7 +8,7 @@
     uv run effet.py installer        (première fois : Chromium + modèle de détourage)
 
 Effets : carrousel-3d, papier-decoupe, texte-derriere, ecran-led, doodle, avant-apres,
-clones, vhs, neon, mosaique, bd, mise-en-abyme.
+clones, vhs, neon, mosaique, bd, mise-en-abyme, todo-list.
 Étapes : la vidéo est recadrée en 9:16 et découpée (--debut, --duree) ; pour papier-decoupe, texte-derriere, doodle, clones, neon et bd,
 la personne est détourée sur ta machine (rembg) ; la page moteur/effet.html est ensuite rendue avec Playwright,
 4 sous-images par image pour le flou de mouvement ; le son d'origine est gardé.
@@ -30,7 +30,7 @@ MODELES = {"rapide": "isnet-general-use", "fin": "birefnet-portrait"}
 DEFAUTS = {
     "texte": {"papier-decoupe": "UN PROMPT", "doodle": "un seul prompt", "clones": "×3", "vhs": "OCT. 26 1998",
               "neon": "un seul prompt", "bd": "UN SEUL PROMPT !", "mosaique": "et tout se retourne"},
-    "haut": "UN SEUL", "mot": {"bd": "POW!"}, "mots": "Tout|fait|en un|prompt", "legendes": "Un seul prompt.|Rendu pro.",
+    "haut": "UN SEUL", "mot": {"bd": "POW!"}, "mots": "Tout|fait|en un|prompt", "todo": "Filmer 5 secondes|Taper une commande|Exporter le clip|-Apprendre After Effects", "legendes": "Un seul prompt.|Rendu pro.",
 }
 
 
@@ -174,8 +174,10 @@ def config(a: argparse.Namespace, fond: bool, detoure: bool, avant: bool, images
         "fond": "/media/fond.mp4" if fond else None,
         "detoure": "/media/detoure.webm" if detoure else None,
         "avant": "/media/avant.mp4" if avant else None,
-        "images": images, "texte": texte, "haut": a.haut if a.haut is not None else DEFAUTS["haut"],
-        "mot": a.mot or DEFAUTS["mot"].get(a.effet, "PROMPT"), "mots": (a.mots or DEFAUTS["mots"]).split("|"),
+        "images": images, "texte": texte,
+        "haut": a.haut if a.haut is not None else ("À faire" if a.effet == "todo-list" else DEFAUTS["haut"]),
+        "mot": a.mot or DEFAUTS["mot"].get(a.effet, "PROMPT"),
+        "mots": (a.mots or (DEFAUTS["todo"] if a.effet == "todo-list" else DEFAUTS["mots"])).split("|"),
         "legendes": (a.legendes or DEFAUTS["legendes"]).split("|"), "couleur": a.couleur,
     }
 
@@ -198,14 +200,14 @@ def verifier(a: argparse.Namespace) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("effet", choices=["installer", "carrousel-3d", "papier-decoupe", "texte-derriere", "ecran-led", "doodle", "avant-apres",
-                                      "clones", "vhs", "neon", "mosaique", "bd", "mise-en-abyme"])
+                                      "clones", "vhs", "neon", "mosaique", "bd", "mise-en-abyme", "todo-list"])
     ap.add_argument("--video", help="ta vidéo (n'importe quel format, recadrée en 9:16)")
     ap.add_argument("--avant", help="avant-apres : vraie vidéo « avant » (sinon l'avant est simulé)")
     ap.add_argument("--images", nargs="+", help="carrousel-3d : 3 à 8 images (captures, couvertures)")
     ap.add_argument("--texte", help="texte de l'effet : lettres découpées, texte manuscrit, néon, bulle de BD, date VHS, étiquette des clones, sous-titre de la mosaïque")
     ap.add_argument("--haut", help="texte-derriere : petite ligne au-dessus du mot (\"\" pour aucune)")
     ap.add_argument("--mot", help="texte-derriere et mosaique : le mot géant ; bd : l'onomatopée")
-    ap.add_argument("--mots", help="ecran-led : mots séparés par | (ex. \"Tout|fait|en un|prompt\")")
+    ap.add_argument("--mots", help="ecran-led : mots séparés par | ; todo-list : lignes séparées par |, « - » devant une ligne pour la barrer")
     ap.add_argument("--legendes", help="avant-apres : 2 sous-titres séparés par |")
     ap.add_argument("--couleur", default="#d97757", help="couleur d'accent (texte-derriere, fond de la mosaique)")
     ap.add_argument("--debut", type=float, default=0.0, help="secondes à sauter au début de ta vidéo")

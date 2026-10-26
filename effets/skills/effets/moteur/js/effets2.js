@@ -193,4 +193,29 @@ const miseEnAbyme = (C) => (host) => {
   };
 };
 
-export const EFFETS2 = { clones, vhs, neon, mosaique, bd, "mise-en-abyme": miseEnAbyme };
+
+// ---------- /todo-list : une liste qui se coche toute seule à côté de toi ; une ligne qui commence par « - » se fait barrer ----------
+const todoList = (C) => (host) => {
+  const v = video(C.fond, host);
+  el("div", "tdshade", null, host);
+  const items = C.mots.map((m) => ({ t: m.replace(/^-\s*/, ""), ok: !m.startsWith("-") }));
+  const card = el("div", "tdcard", `<div class="tdh">${C.haut}</div>${items.map((x) => `<div class="tdrow${x.ok ? "" : " no"}">
+    <span class="tdbox"><svg viewBox="0 0 40 40"><path pathLength="1" d="${x.ok ? "M9 21 L17 29 L31 12" : "M11 11 L29 29 M29 11 L11 29"}"/></svg></span>
+    <span class="tdt">${x.t}<i></i></span></div>`).join("")}`, host);
+  const rows = [...card.querySelectorAll(".tdrow")];
+  const T0 = 0.5, STEP = Math.min(0.3, 1.6 / Math.max(1, rows.length));
+  return async (t) => {
+    await seekVideo(v, t);
+    const kc = pop(t - 0.08, 2.6, 0.7, 1.06);
+    css(card, { opacity: clamp(kc * 3), transform: `translateX(${(1 - clamp(kc, 0, 1.06)) * 260}px) rotate(${lerp(6, 2, clamp(kc))}deg)` });
+    rows.forEach((r, i) => {
+      const x = t - T0 - i * STEP;
+      r.querySelector(".tdbox").style.transform = `scale(${x > 0 ? lerp(0.6, 1, pop(x, 4, 0.5, 1.2)) : 1})`;
+      r.querySelector("path").style.strokeDashoffset = String(1 - clamp(x / 0.14));
+      r.classList.toggle("on", x > 0);
+      r.querySelector("i").style.width = `${100 * clamp((x - 0.06) / 0.2)}%`;
+    });
+  };
+};
+
+export const EFFETS2 = { clones, vhs, neon, mosaique, bd, "mise-en-abyme": miseEnAbyme, "todo-list": todoList };

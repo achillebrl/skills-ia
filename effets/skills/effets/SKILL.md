@@ -1,11 +1,11 @@
 ---
 name: effets
-description: Moteur commun de 12 effets vidéo verticaux pour reels (carrousel 3D, papier découpé, texte derrière, écran LED, doodle, avant/après, clones, VHS, néon, mosaïque, BD, mise en abyme), rendus image par image sur la machine de l'utilisateur. This skill should be used when the user types /effets, asks which video effects are available, how to install them, or when one of the commands /carrousel-3d, /papier-decoupe, /texte-derriere, /ecran-led, /doodle, /avant-apres, /clones, /vhs, /neon, /mosaique, /bd, /mise-en-abyme needs installation help or troubleshooting.
+description: Moteur commun de 13 effets vidéo verticaux pour reels (carrousel 3D, papier découpé, texte derrière, écran LED, doodle, avant/après, clones, VHS, néon, mosaïque, BD, mise en abyme, todo list), rendus image par image sur la machine de l'utilisateur. This skill should be used when the user types /effets, asks which video effects are available, how to install them, or when one of the commands /carrousel-3d, /papier-decoupe, /texte-derriere, /ecran-led, /doodle, /avant-apres, /clones, /vhs, /neon, /mosaique, /bd, /mise-en-abyme, /todo-list needs installation help or troubleshooting.
 ---
 
 # Effets vidéo pour reels (moteur commun)
 
-Douze commandes, une par effet. Chacune prend une vidéo (ou des images) et rend un clip vertical **1080 × 1920, 30 i/s**, avec flou de mouvement, prêt à monter dans un reel :
+Treize commandes, une par effet. Chacune prend une vidéo (ou des images) et rend un clip vertical **1080 × 1920, 30 i/s**, avec flou de mouvement, prêt à monter dans un reel :
 
 | Commande | Effet | Il faut |
 |---|---|---|
@@ -21,6 +21,7 @@ Douze commandes, une par effet. Chacune prend une vidéo (ou des images) et rend
 | `/mosaique` | ton titre en 60 tuiles qui se retournent sur ta vidéo | une vidéo, un titre |
 | `/bd` | case de BD : trame, contour encré, onomatopée, bulle | une vidéo de toi (détourée) |
 | `/mise-en-abyme` | ta vidéo dans ta vidéo, zoom sans fin | une vidéo |
+| `/todo-list` | une liste « À faire » qui se coche toute seule, une ligne barrée | une vidéo, 3 à 5 lignes |
 
 Quand l'utilisateur tape `/effets` seul : montrer ce tableau, vérifier l'installation (ci-dessous) et proposer l'effet qui colle à sa vidéo.
 

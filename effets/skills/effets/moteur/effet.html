@@ -105,6 +105,19 @@ html, body { background: #000; }
 .abzoom { position: absolute; inset: 0; }
 .ablayer { position: absolute; inset: 0; overflow: hidden; }
 .ablayer.abin { border: 22px solid #fff; border-radius: 60px; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
+.tdshade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.35)); }
+.tdcard { position: absolute; left: 420px; top: 1230px; width: 630px; padding: 38px 40px 26px; border-radius: 44px; background: rgba(250,249,245,.94);
+  box-shadow: 0 40px 90px rgba(0,0,0,.55); transform-origin: 0 50%; font-family: "Geist", sans-serif; color: #1f1e1d; }
+.tdh { font-size: 56px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 14px; }
+.tdrow { display: flex; align-items: center; gap: 24px; height: 96px; font-size: 39px; font-weight: 600; white-space: nowrap; }
+.tdbox { flex: none; width: 62px; height: 62px; border-radius: 18px; border: 4px solid #c9c6bd; display: flex; align-items: center; justify-content: center; }
+.tdbox svg { width: 46px; height: 46px; fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.tdrow.on .tdbox { background: #34c759; border-color: #34c759; }
+.tdrow.no.on .tdbox { background: #e5484d; border-color: #e5484d; }
+.tdt { position: relative; }
+.tdt i { position: absolute; left: -4px; top: 52%; height: 5px; width: 0; background: #1f1e1d; border-radius: 3px; }
+.tdrow:not(.no) .tdt i { display: none; }
+.tdrow.on:not(.no) .tdt { color: #8a877e; }
 </style>
 </head>
 <body>

@@ -1,4 +1,4 @@
-# 12 effets vidéo pour tes reels, en une commande chacun
+# 13 effets vidéo pour tes reels, en une commande chacun
 
 ![Série 1](exemples/planche.jpg)
 
@@ -20,12 +20,13 @@ Tu donnes ta vidéo à Claude Code, tu tapes la commande de l'effet, et il te re
 | `/mosaique` | Ton titre en 60 tuiles qui se retournent en vague sur ta vidéo | `/mosaique "UN SEUL" "PROMPT"` |
 | `/bd` | Toi en case de BD : trame de points, contour encré, « POW! » et bulle | `/bd "UN SEUL PROMPT !"` |
 | `/mise-en-abyme` | Ta vidéo dans ta vidéo, sept fois, et la caméra plonge sans fin | `/mise-en-abyme` |
+| `/todo-list` | Une liste « À faire » qui se coche toute seule à côté de toi, la dernière ligne barrée | `/todo-list "Filmer 5 secondes|Taper une commande|-Apprendre After Effects"` |
 
 Les commandes s'écrivent en langage normal, par exemple : `/texte-derriere sur ma-video.mp4 avec le mot CODE en bleu`. Claude choisit les options, fait un aperçu rapide, vérifie le résultat image par image, puis lance le rendu final.
 
 ## Installer (2 minutes)
 
-1. Copie les 13 dossiers de `effets/skills/` dans `~/.claude/skills/` (Mac / Linux) ou `%USERPROFILE%\.claude\skills\` (Windows). En une ligne sur Mac / Linux :
+1. Copie les 14 dossiers de `effets/skills/` dans `~/.claude/skills/` (Mac / Linux) ou `%USERPROFILE%\.claude\skills\` (Windows). En une ligne sur Mac / Linux :
 
 ```bash
 git clone --depth 1 https://github.com/achillebrl/skills-ia /tmp/skills-ia && cp -R /tmp/skills-ia/effets/skills/* ~/.claude/skills/
@@ -34,7 +35,7 @@ git clone --depth 1 https://github.com/achillebrl/skills-ia /tmp/skills-ia && cp
 2. Installe [uv](https://docs.astral.sh/uv/) si tu ne l'as pas (`curl -LsSf https://astral.sh/uv/install.sh | sh`), puis relance Claude Code.
 3. Tape `/effets` : Claude vérifie l'installation et télécharge une fois Chromium et le modèle de détourage (≈ 180 Mo).
 
-Le dossier `effets` est le moteur commun ; les 12 autres sont les commandes. Garde-les tous côte à côte.
+Le dossier `effets` est le moteur commun ; les 13 autres sont les commandes. Garde-les tous côte à côte.
 
 ## Ce qu'il faut filmer
 
