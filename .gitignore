@@ -3,3 +3,5 @@ node_modules/
 .testeurs/
 .investisseurs/
 .prospects/
+.effets/
+effets-sortie/

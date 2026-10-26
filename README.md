@@ -12,6 +12,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 | [match](match/) | Ton site face à ton concurrent, en 5 rounds (promesse, preuve, prix, vitesse mesurée avec Lighthouse, bouton pour agir) : un gagnant par round, la phrase exacte qui rattrape là où tu perds, un score sur 5 et tes 3 coups à jouer ce soir | `/match https://ton-site.fr https://concurrent.fr` |
 | [clients](clients/) | Ton idée face à 10 clients simulés, avec The Mom Test : tu poses tes questions, ils répondent comme de vrais gens (compliments creux compris) ; chaque piège signalé avec la bonne version, puis qui a vraiment le problème, ce qu'il paie déjà et 5 questions pour de vrais clients | `/clients "ton idée en une phrase"` |
 | [tarif](tarif/) | Ton prix face à 100 acheteurs simulés (étudiant, freelance, PME, cadre…), avec les 4 questions de van Westendorp : fourchette de prix acceptable, prix optimal et prix qui fait fuir calculés par un script, tes deux prix comparés par profil, et le profil prêt à payer plus pour une offre premium | `/tarif "ton produit en une phrase" 9 19` |
+| [effets](effets/) | 6 effets vidéo pour tes reels, une commande chacun : carrousel 3D, papier découpé, texte derrière toi, écran LED, doodle, avant/après ; clip vertical 1080 × 1920 rendu sur ta machine avec flou de mouvement, détourage compris | `/texte-derriere ma-video.mp4` |
 | [seniors](seniors/) | 7 relecteurs seniors (sécurité, perf, lisibilité, tests, mobile, accessibilité, SEO) relisent ton code avant le push et rendent une seule liste : 3 corrections avant de pusher, 2 idées pour plus tard | `/seniors` |
 
 ## Installer un skill
@@ -19,6 +20,8 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 1. Télécharge le dossier du skill (bouton **Code → Download ZIP** en haut de cette page, puis garde le dossier voulu).
 2. Copie-le dans `~/.claude/skills/` (Mac / Linux) ou `%USERPROFILE%\.claude\skills\` (Windows).
 3. Relance Claude Code et tape la commande.
+
+`effets` a 7 dossiers (le moteur et les 6 commandes) : copie tout le contenu de `effets/skills/`, voir [son guide](effets/). Il a besoin de [uv](https://docs.astral.sh/uv/).
 
 `visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` a besoin de Node.js pour son calcul, sans rien installer.
 
