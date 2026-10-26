@@ -1,6 +1,8 @@
-# 6 effets vidéo pour tes reels, en une commande chacun
+# 12 effets vidéo pour tes reels, en une commande chacun
 
-![Les 6 effets](exemples/planche.jpg)
+![Série 1](exemples/planche.jpg)
+
+![Série 2](exemples/planche2.jpg)
 
 Tu donnes ta vidéo à Claude Code, tu tapes la commande de l'effet, et il te rend un clip vertical **1080 × 1920** prêt à monter dans ton reel. Pas d'After Effects, pas de CapCut : l'effet est codé en HTML et rendu image par image sur ta machine, avec flou de mouvement.
 
@@ -12,12 +14,18 @@ Tu donnes ta vidéo à Claude Code, tu tapes la commande de l'effet, et il te re
 | `/ecran-led` | Des mots en points LED, puis ta vidéo sur un panneau géant | `/ecran-led "Tout fait en un prompt"` |
 | `/doodle` | Un contour blanc qui tremble autour de toi, une couronne et des dessins à main levée | `/doodle "un seul prompt"` |
 | `/avant-apres` | Un curseur qui glisse entre ton avant et ton après, sous-titres animés | `/avant-apres brut.mp4 final.mp4` |
+| `/clones` | Deux autres toi débarquent à ta gauche et à ta droite, à d'autres moments de ta vidéo | `/clones` |
+| `/vhs` | Ta vidéo façon caméscope 1998 : couleurs qui bavent, lignes, sauts, PLAY et REC | `/vhs "OCT. 26 1998"` |
+| `/neon` | Ton contour en néon qui s'allume, avec l'écho coloré de tes gestes | `/neon "un seul prompt"` |
+| `/mosaique` | Ton titre en 60 tuiles qui se retournent en vague sur ta vidéo | `/mosaique "UN SEUL" "PROMPT"` |
+| `/bd` | Toi en case de BD : trame de points, contour encré, « POW! » et bulle | `/bd "UN SEUL PROMPT !"` |
+| `/mise-en-abyme` | Ta vidéo dans ta vidéo, sept fois, et la caméra plonge sans fin | `/mise-en-abyme` |
 
 Les commandes s'écrivent en langage normal, par exemple : `/texte-derriere sur ma-video.mp4 avec le mot CODE en bleu`. Claude choisit les options, fait un aperçu rapide, vérifie le résultat image par image, puis lance le rendu final.
 
 ## Installer (2 minutes)
 
-1. Copie les 7 dossiers de `effets/skills/` dans `~/.claude/skills/` (Mac / Linux) ou `%USERPROFILE%\.claude\skills\` (Windows). En une ligne sur Mac / Linux :
+1. Copie les 13 dossiers de `effets/skills/` dans `~/.claude/skills/` (Mac / Linux) ou `%USERPROFILE%\.claude\skills\` (Windows). En une ligne sur Mac / Linux :
 
 ```bash
 git clone --depth 1 https://github.com/achillebrl/skills-ia /tmp/skills-ia && cp -R /tmp/skills-ia/effets/skills/* ~/.claude/skills/
@@ -26,12 +34,12 @@ git clone --depth 1 https://github.com/achillebrl/skills-ia /tmp/skills-ia && cp
 2. Installe [uv](https://docs.astral.sh/uv/) si tu ne l'as pas (`curl -LsSf https://astral.sh/uv/install.sh | sh`), puis relance Claude Code.
 3. Tape `/effets` : Claude vérifie l'installation et télécharge une fois Chromium et le modèle de détourage (≈ 180 Mo).
 
-Le dossier `effets` est le moteur commun ; les 6 autres sont les commandes. Garde-les tous les 7 côte à côte.
+Le dossier `effets` est le moteur commun ; les 12 autres sont les commandes. Garde-les tous côte à côte.
 
 ## Ce qu'il faut filmer
 
-- **Face caméra, de la taille à la tête** (papier découpé, texte derrière, écran LED) : téléphone fixe à hauteur des yeux, pièce plutôt sombre, une lampe de côté, de l'espace au-dessus de la tête. Pas besoin de parler.
-- **Plan serré, tête et buste** (doodle, avant/après) : bras croisés ou mains jointes, silhouette nette.
+- **Face caméra, de la taille à la tête** (papier découpé, texte derrière, écran LED, clones, BD, mise en abyme, mosaïque) : téléphone fixe à hauteur des yeux, pièce plutôt sombre, une lampe de côté, de l'espace au-dessus de la tête. Pas besoin de parler.
+- **Plan serré, tête et buste, avec un geste** (doodle, avant/après, néon, VHS) : bras croisés ou mains jointes, silhouette nette.
 - **Par-dessus ton épaule, téléphone en main** (carrousel 3D) : le haut de l'image vide, l'anneau tourne au-dessus.
 
 3 à 5 secondes suffisent par effet. Pour l'avant/après, le plus parlant reste ta vraie vidéo brute et ta vraie vidéo montée.

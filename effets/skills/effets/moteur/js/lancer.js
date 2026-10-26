@@ -1,8 +1,9 @@
 // Monte l'effet décrit par config.json (?c=…) et expose window.seek(t) au script de rendu.
 import { EFFETS } from "./effets.js";
+import { EFFETS2 } from "./effets2.js";
 
 const C = await (await fetch(new URLSearchParams(location.search).get("c"))).json();
-const update = EFFETS[C.effet](C)(document.getElementById("stage"));
+const update = { ...EFFETS, ...EFFETS2 }[C.effet](C)(document.getElementById("stage"));
 window.duration = C.duree;
 window.seek = (t) => update(t);
 await document.fonts.ready;

@@ -29,7 +29,7 @@ const carrousel = (C) => (host) => {
 };
 
 /** Silhouette blanche épaissie de `r` pixels (demi-résolution), tirée de la vidéo détourée. */
-function makeOutline() {
+export function makeOutline() {
   const w = W * HALF, h = H * HALF;
   const src = document.createElement("canvas"); src.width = w; src.height = h;
   const dil = document.createElement("canvas"); dil.width = w; dil.height = h;

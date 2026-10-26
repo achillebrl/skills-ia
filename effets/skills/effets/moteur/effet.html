@@ -65,6 +65,46 @@ html, body { background: #000; }
 .pp-letters .le { background: #a9cbee; color: #13305a; font-family: "Geist", sans-serif; font-weight: 800; }
 .pp-sticker { filter: drop-shadow(0 22px 26px rgba(0,0,0,.35)); transform-origin: 50% 60%; z-index: 2; }
 .pp-x { position: absolute; left: 860px; top: 1260px; font: 900 140px/1 "Geist", sans-serif; color: #d93b2b; transform: rotate(12deg); z-index: 3; }
+/* Série 2 (effets2.js) */
+.vid.clone { transform-origin: 50% 100%; filter: brightness(.82) saturate(.9); }
+.clflash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+.cltag { position: absolute; left: 50%; top: 1460px; font: 900 260px/1 "Geist", sans-serif; color: #fff; letter-spacing: -.04em; text-shadow: 0 12px 40px rgba(0,0,0,.55); }
+.vhscv { position: absolute; inset: 0; width: 1080px; height: 1920px; filter: blur(.6px); }
+.vhslines { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 2px, transparent 2px 6px); mix-blend-mode: multiply; }
+.vhsband { position: absolute; left: 0; top: 0; width: 1080px; height: 90px; background: linear-gradient(transparent, rgba(255,255,255,.22) 45%, rgba(255,255,255,.35) 50%, rgba(255,255,255,.22) 55%, transparent); filter: blur(3px); }
+.vhsnoise { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; opacity: .09; mix-blend-mode: screen; }
+.vhsosd { position: absolute; inset: 0; font: 700 54px "JetBrains Mono", monospace; color: #f2f2f2; text-shadow: 3px 0 0 rgba(255,0,60,.7), -3px 0 0 rgba(0,200,255,.7), 0 0 10px rgba(255,255,255,.5); }
+.vhsosd > div { position: absolute; }
+.vp { left: 70px; top: 120px; } .vs { right: 70px; top: 120px; } .vr { right: 70px; top: 200px; color: #ff3b3b; }
+.vd { left: 70px; bottom: 210px; } .vt { left: 70px; bottom: 140px; }
+.neonbg { filter: brightness(.28) saturate(.5) contrast(1.1); }
+.neontint { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 35%, rgba(60,20,120,.35), rgba(5,5,20,.75)); }
+.neoncv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; filter: drop-shadow(0 0 10px #ff2bd6) drop-shadow(0 0 26px #7a5cff); }
+.neonmain { filter: drop-shadow(0 0 8px #00e5ff) drop-shadow(0 0 22px #00e5ff) drop-shadow(0 0 60px #00b3ff); }
+.neonfg { filter: saturate(1.2) brightness(1.05); }
+.neontxt { position: absolute; left: 0; width: 1080px; top: 1500px; text-align: center; font: italic 400 130px/1 "Instrument Serif", Georgia, serif; color: #ffe9fb;
+  text-shadow: 0 0 6px #fff, 0 0 18px #ff2bd6, 0 0 40px #ff2bd6, 0 0 80px #ff2bd6; }
+.mowrap { position: absolute; inset: 0; perspective: 1600px; transform-origin: 540px 960px; }
+.motile { position: absolute; transform-style: preserve-3d; }
+.moface { position: absolute; inset: 0; width: 100%; height: 100%; backface-visibility: hidden; overflow: hidden; }
+.mofront { background: #d97757; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.moback { transform: rotateY(180deg); }
+.moposter { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; text-align: center; color: #fff; font-family: "Geist", sans-serif; }
+.mp1 { position: absolute; left: 0; width: 1080px; top: 640px; font-size: 120px; font-weight: 800; }
+.mp2 { position: absolute; left: 0; width: 1080px; top: 780px; font-size: 230px; font-weight: 900; letter-spacing: -.04em; color: #1f1e1d; }
+.mp3 { position: absolute; left: 0; width: 1080px; top: 1060px; font: italic 400 96px "Instrument Serif", Georgia, serif; }
+.bdbg { position: absolute; inset: 0; background:
+  radial-gradient(circle, rgba(200,30,20,.35) 2.6px, transparent 3px) 0 0 / 22px 22px,
+  repeating-conic-gradient(from 0deg at 50% 38%, #ffcc1f 0 7deg, #ff9f1a 7deg 14deg); }
+.bdcv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 50% 100%; }
+.bdpow { position: absolute; left: 30px; top: 220px; transform-origin: 50% 50%; filter: drop-shadow(6px 8px 0 rgba(0,0,0,.35)); }
+.bdbubble { position: absolute; right: 40px; top: 300px; max-width: 560px; padding: 40px 46px; background: #fff; border: 7px solid #111; border-radius: 50%;
+  font: italic 900 74px/1.02 "Geist", sans-serif; color: #111; text-align: center; transform-origin: 30% 100%; box-shadow: 8px 10px 0 rgba(0,0,0,.3); }
+.bdbubble::after { content: ""; position: absolute; left: 90px; bottom: -58px; border: 30px solid transparent; border-top: 58px solid #111; border-bottom: 0; transform: skewX(-25deg); }
+.bdframe { position: absolute; inset: 22px; border: 14px solid #111; outline: 22px solid #fff; pointer-events: none; }
+.abzoom { position: absolute; inset: 0; }
+.ablayer { position: absolute; inset: 0; overflow: hidden; }
+.ablayer.abin { border: 22px solid #fff; border-radius: 60px; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
 </style>
 </head>
 <body>
