@@ -5,3 +5,5 @@ node_modules/
 .prospects/
 .effets/
 effets-sortie/
+.transfo/
+transfo-sortie/
