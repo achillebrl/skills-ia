@@ -221,16 +221,17 @@ const ecranLed = (C) => (host) => {
     const face = faceOn ? octx.getImageData(0, 0, GW, GH).data : null;
     // Les mots, dessinés à part pour rester blancs par-dessus la vidéo.
     xctx.clearRect(0, 0, GW, GH);
-    for (const { w, t: tw } of WORDS) {
+    WORDS.forEach(({ w, t: tw }, i) => {
       const u = (t - tw) / dur;
-      if (u < -0.1 || u > 1.0) continue;
+      const last = i === WORDS.length - 1; // le dernier mot reste affiché jusqu'à la fin
+      if (u < -0.1 || (!last && u > 1.0)) return;
       const k = easeOut(clamp(u + 0.1, 0, 1.1) / 1.1);
-      const a = clamp((u + 0.1) * 6) * (1 - clamp((u - 0.75) * 5));
+      const a = clamp((u + 0.1) * 6) * (last ? 1 : 1 - clamp((u - 0.75) * 5));
       xctx.save(); xctx.translate(GW / 2, faceOn ? GH * 0.78 : GH / 2); xctx.scale(lerp(0.45, faceOn ? 1.05 : 1.25, k), lerp(0.45, faceOn ? 1.05 : 1.25, k));
       xctx.fillStyle = `rgba(255,255,255,${a})`;
       xctx.font = `800 ${w.length > 5 ? Math.max(9, Math.floor(100 / w.length)) : w.length > 4 ? 19 : 28}px Geist, sans-serif`;
       xctx.textAlign = "center"; xctx.textBaseline = "middle"; xctx.fillText(w, 0, 0); xctx.restore();
-    }
+    });
     const tx = xctx.getImageData(0, 0, GW, GH).data;
     ctx.fillStyle = "#050505"; ctx.fillRect(0, 0, W, H);
     const flick = 0.97 + 0.03 * Math.sin(t * 60), sw = P / 3 - 1;
