@@ -14,6 +14,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 | [tarif](tarif/) | Ton prix face à 100 acheteurs simulés (étudiant, freelance, PME, cadre…), avec les 4 questions de van Westendorp : fourchette de prix acceptable, prix optimal et prix qui fait fuir calculés par un script, tes deux prix comparés par profil, et le profil prêt à payer plus pour une offre premium | `/tarif "ton produit en une phrase" 9 19` |
 | [transfo](transfo/) | Tu deviens quelqu'un d'autre en pleine phrase : une personne fictive termine ta phrase avec tes gestes, ta bouche et ta voix transformée, puis présente ton objet (Nano Banana Pro, Kling Motion Control, ElevenLabs via fal.ai, environ 0,90 $ les 12 s, devis avant de payer) | `/transfo ma-video.mp4 en coach sportive` |
 | [effets](effets/) | 13 effets vidéo pour tes reels, une commande chacun : carrousel 3D, papier découpé, texte derrière toi, écran LED, doodle, avant/après, clones, VHS, néon, mosaïque, BD, mise en abyme, todo list ; clip vertical 1080 × 1920 rendu sur ta machine avec flou de mouvement, détourage compris | `/texte-derriere ma-video.mp4` |
+| [remonte](remonte/) | Ton site de la page 2 à la page 1 de Google : crawl de toutes tes pages (404, liens cassés, titres trop longs ou en double, pages minces), requêtes coincées en positions 8 à 20 dans ton export Search Console classées par clics gagnables, titres et pages réécrits, et ce que ChatGPT répond sur ton sujet ; à relancer chaque jour | `/remonte https://ton-site.fr` |
 | [seniors](seniors/) | 7 relecteurs seniors (sécurité, perf, lisibilité, tests, mobile, accessibilité, SEO) relisent ton code avant le push et rendent une seule liste : 3 corrections avant de pusher, 2 idées pour plus tard | `/seniors` |
 
 ## Installer un skill
@@ -24,7 +25,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 
 `effets` a 14 dossiers (le moteur et les 13 commandes) : copie tout le contenu de `effets/skills/`, voir [son guide](effets/). Il a besoin de [uv](https://docs.astral.sh/uv/). `transfo` aussi, plus une clé [fal.ai](https://fal.ai) avec quelques dollars.
 
-`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` a besoin de Node.js pour son calcul, sans rien installer.
+`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer.
 
 Ou en une ligne (Mac / Linux), par exemple pour `visiteurs` :
 
