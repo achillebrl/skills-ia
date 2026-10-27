@@ -15,6 +15,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 | [transfo](transfo/) | Tu deviens quelqu'un d'autre en pleine phrase : une personne fictive termine ta phrase avec tes gestes, ta bouche et ta voix transformée, puis présente ton objet (Nano Banana Pro, Kling Motion Control, ElevenLabs via fal.ai, environ 0,90 $ les 12 s, devis avant de payer) | `/transfo ma-video.mp4 en coach sportive` |
 | [effets](effets/) | 13 effets vidéo pour tes reels, une commande chacun : carrousel 3D, papier découpé, texte derrière toi, écran LED, doodle, avant/après, clones, VHS, néon, mosaïque, BD, mise en abyme, todo list ; clip vertical 1080 × 1920 rendu sur ta machine avec flou de mouvement, détourage compris | `/texte-derriere ma-video.mp4` |
 | [remonte](remonte/) | Ton site de la page 2 à la page 1 de Google : crawl de toutes tes pages (404, liens cassés, titres trop longs ou en double, pages minces), requêtes coincées en positions 8 à 20 dans ton export Search Console classées par clics gagnables, titres et pages réécrits, et ce que ChatGPT répond sur ton sujet ; à relancer chaque jour | `/remonte https://ton-site.fr` |
+| [voix](voix/) | Ta voix clonée en local et gratuitement avec VoiceStudio, sans piège de licence : vérifie l'accord, dit quel moteur a le droit de servir pour une pub (le moteur par défaut est non commercial), contrôle ton enregistrement et génère tes voix off à −14 LUFS | `/voix script.txt --pub` |
 | [seniors](seniors/) | 7 relecteurs seniors (sécurité, perf, lisibilité, tests, mobile, accessibilité, SEO) relisent ton code avant le push et rendent une seule liste : 3 corrections avant de pusher, 2 idées pour plus tard | `/seniors` |
 
 ## Installer un skill
@@ -25,7 +26,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 
 `effets` a 14 dossiers (le moteur et les 13 commandes) : copie tout le contenu de `effets/skills/`, voir [son guide](effets/). Il a besoin de [uv](https://docs.astral.sh/uv/). `transfo` aussi, plus une clé [fal.ai](https://fal.ai) avec quelques dollars.
 
-`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer.
+`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer. `voix` a besoin de Node.js, de ffmpeg et de [VoiceStudio](https://github.com/debpalash/VoiceStudio) (le skill guide l'installation).
 
 Ou en une ligne (Mac / Linux), par exemple pour `visiteurs` :
 
