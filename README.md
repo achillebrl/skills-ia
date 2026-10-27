@@ -17,6 +17,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 | [remonte](remonte/) | Ton site de la page 2 à la page 1 de Google : crawl de toutes tes pages (404, liens cassés, titres trop longs ou en double, pages minces), requêtes coincées en positions 8 à 20 dans ton export Search Console classées par clics gagnables, titres et pages réécrits, et ce que ChatGPT répond sur ton sujet ; à relancer chaque jour | `/remonte https://ton-site.fr` |
 | [voix](voix/) | Ta voix clonée en local et gratuitement avec VoiceStudio, sans piège de licence : vérifie l'accord, dit quel moteur a le droit de servir pour une pub (le moteur par défaut est non commercial), contrôle ton enregistrement et génère tes voix off à −14 LUFS | `/voix script.txt --pub` |
 | [seniors](seniors/) | 7 relecteurs seniors (sécurité, perf, lisibilité, tests, mobile, accessibilité, SEO) relisent ton code avant le push et rendent une seule liste : 3 corrections avant de pusher, 2 idées pour plus tard | `/seniors` |
+| [spectateurs](spectateurs/) | Ton reel face à 100 spectateurs simulés avant de le publier : images extraites avec ffmpeg, chacun regarde seconde par seconde (4 sur 10 le son coupé) et dit quand il scrolle et pourquoi, s'il like ou l'envoie ; courbe de rétention, temps de visionnage moyen, likes et envois pour 100, puis le passage qui fait fuir réécrit et re-testé | `/spectateurs mon-reel.mp4` |
 
 ## Installer un skill
 
@@ -26,7 +27,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 
 `effets` a 14 dossiers (le moteur et les 13 commandes) : copie tout le contenu de `effets/skills/`, voir [son guide](effets/). Il a besoin de [uv](https://docs.astral.sh/uv/). `transfo` aussi, plus une clé [fal.ai](https://fal.ai) avec quelques dollars.
 
-`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer. `voix` a besoin de Node.js, de ffmpeg et de [VoiceStudio](https://github.com/debpalash/VoiceStudio) (le skill guide l'installation).
+`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer. `spectateurs` a besoin de ffmpeg. `voix` a besoin de Node.js, de ffmpeg et de [VoiceStudio](https://github.com/debpalash/VoiceStudio) (le skill guide l'installation).
 
 Ou en une ligne (Mac / Linux), par exemple pour `visiteurs` :
 
