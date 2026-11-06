@@ -1,0 +1,8 @@
+node_modules/
+marques/
+**/voix.mp3
+**/musique.mp3
+**/pub.mp4
+**/apercu.jpg
+**/.pub_muette.mp4
+**/.apercu_*.jpg

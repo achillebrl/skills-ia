@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Pub animée</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=block" rel="stylesheet">
+  <style>
+    html, body { margin: 0; background: #000; overflow: hidden; }
+    canvas { display: block; width: 1920px; height: 1080px; }
+  </style>
+</head>
+<body>
+  <canvas id="toile" width="1920" height="1080"></canvas>
+  <script type="module">
+    // ?marque=<dossier> (relatif à la racine du skill). Expose window.seek(t), window.duration et window.ready.
+    import { horloge } from "./moteur.js";
+    const dossier = new URLSearchParams(location.search).get("marque") ?? "exemples/panyo";
+    const ctx = document.getElementById("toile").getContext("2d");
+    const voix = await fetch(`../${dossier}/voix.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    const { default: marque } = await import(`../${dossier}/marque.js`);
+    await Promise.all([500, 600, 700, 800].map((p) => document.fonts.load(`${p} 40px Poppins`)));
+    await document.fonts.ready;
+    const pub = marque({ mot: horloge(voix), voix });
+    ctx.police = pub.police ?? "Poppins, sans-serif";
+    window.duration = pub.duree;
+    window.seek = (t) => {
+      ctx.save();
+      pub.dessin(ctx, t);
+      ctx.restore();
+    };
+    window.seek(0);
+    window.ready = true;
+  </script>
+</body>
+</html>

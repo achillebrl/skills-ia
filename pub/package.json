@@ -1,0 +1,7 @@
+{
+  "name": "skill-pub",
+  "private": true,
+  "type": "module",
+  "description": "Pub animée de 20 s pour ta marque, en HTML puis MP4 (Playwright + ffmpeg)",
+  "dependencies": { "playwright": "^1.48.0" }
+}

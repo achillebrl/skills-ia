@@ -19,6 +19,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 | [seniors](seniors/) | 7 relecteurs seniors (sécurité, perf, lisibilité, tests, mobile, accessibilité, SEO) relisent ton code avant le push et rendent une seule liste : 3 corrections avant de pusher, 2 idées pour plus tard | `/seniors` |
 | [spectateurs](spectateurs/) | Ton reel face à 100 spectateurs simulés avant de le publier : images extraites avec ffmpeg, chacun regarde seconde par seconde (4 sur 10 le son coupé) et dit quand il scrolle et pourquoi, s'il like ou l'envoie ; courbe de rétention, temps de visionnage moyen, likes et envois pour 100, puis le passage qui fait fuir réécrit et re-testé | `/spectateurs mon-reel.mp4` |
 | [clipping](clipping/) | Ta longue partie de jeu (GTA, Fortnite, Minecraft…) ou ton live en 5 à 10 shorts verticaux prêts à poster : meilleurs moments trouvés au volume, à l'action et aux changements de plan, vidéo entière sur fond flou, bandeau de titre, sous-titres mot à mot (faster-whisper), titres, descriptions et hashtags pour chaque short | `/clipping ma-partie.mp4` |
+| [pub](pub/) | Une pub animée de 20 s pour ta marque, entièrement en code : texte de la pub, voix off ElevenLabs avec le temps de chaque mot (facultative), scènes de motion design calées sur les mots (trait qui se dessine, maquette de téléphone, transitions), rendu MP4 1920 × 1080 avec Playwright et ffmpeg, à −14 LUFS | `/pub ma marque` |
 
 ## Installer un skill
 
@@ -28,7 +29,7 @@ Les skills présentés dans les reels de [@achille.ia](https://www.instagram.com
 
 `effets` a 14 dossiers (le moteur et les 13 commandes) : copie tout le contenu de `effets/skills/`, voir [son guide](effets/). Il a besoin de [uv](https://docs.astral.sh/uv/). `transfo` aussi, plus une clé [fal.ai](https://fal.ai) avec quelques dollars.
 
-`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer. `spectateurs` a besoin de ffmpeg. `clipping` a besoin de ffmpeg et de [uv](https://docs.astral.sh/uv/) (au premier lancement, il télécharge le modèle de transcription, environ 500 Mo). `voix` a besoin de Node.js, de ffmpeg et de [VoiceStudio](https://github.com/debpalash/VoiceStudio) (le skill guide l'installation).
+`visiteurs`, `testeurs`, `aveugle` et `match` ont besoin de Node.js : au premier lancement, ils installent Playwright et Chromium dans leur dossier. `match` utilise aussi Google Chrome pour Lighthouse. `tarif` et `remonte` ont besoin de Node.js, sans rien installer. `spectateurs` a besoin de ffmpeg. `clipping` a besoin de ffmpeg et de [uv](https://docs.astral.sh/uv/) (au premier lancement, il télécharge le modèle de transcription, environ 500 Mo). `voix` a besoin de Node.js, de ffmpeg et de [VoiceStudio](https://github.com/debpalash/VoiceStudio) (le skill guide l'installation). `pub` a besoin de Node.js et de ffmpeg (`npm install` puis `npx playwright install chromium` dans son dossier) ; la voix off demande une clé ElevenLabs.
 
 Ou en une ligne (Mac / Linux), par exemple pour `visiteurs` :
 
